@@ -7,64 +7,141 @@ int yyparse();
 int yyerror(const char *s);
 unsigned int line = 1;
 %}
+%error-verbose;
+%token INCLUDE NAME_FILE_HEADER ENDL TYPE TEXT NUM STRUCT IF ELSE WHILE DO FOR ELIF   ';' 
 
-%token INCLUDE NAME_FILE_HEADER ENDL TYPE TEXT NUM STRUCT  // Объявляем токены, которые будем использовать
+%start programm
 
+%left ELSE
+%left ELIF
 %%
 
 
-Programm:
-	begin
-	| begin begin_next 			
+programm:
+	 begin_next  {printf ("begin nexttttt");}	
+	// | begin {printf ("begin nexttttt");}			
 	;
 
 begin:
 	include
 	| func ';' 			
-	| func '{''}'';'		
-	| func '{'body_func'}'';' 			
-	| definition
+	| func '{' '}' ';'		
+	| func '{'body_func'}' 		
+	| definition {printf ("iiiiiiiiii");}
+	| operator // s // убрали ;
+
 	;
-	
-begin_next: 
-	begin				
-	| begin begin_next 		
+/*operators:
+	operator
+	| operators operator
+	; */
+
+operator:
+	assigment_operators
+	| conditional_operator 
+	;
+assigment_operators:
+	id '=' '"' TEXT '"' ';'
+	| id '=' NUM ';'
+	| id '=' id ';'
 	;
 
+begin_next: 
+	begin				 
+	| begin_next  begin 		
+	;
+
+
+/*
+definitions:
+	definition  ';'
+	| definitions  definition ';'*/
 
 definition:
-	variable ';'
-	| desc_array ';'
-	| desc_struct ';'
+	initialize ';'
+	| desc_array
+	| desc_struct
 	;
 
-variable: 
-	type id 
-	| ',' '*' id 
-	| ',' id
+Allinitialize:
+	id_list  initialize
+	| id_list 
+	| id_list '=' '"' TEXT '"' 
+	| id_list '=' NUM 
+	// | begin
 	;
+
+initialize:
+   type Allinitialize 
+   |  Allinitialize
+   ; 
+
+/*variable: 
+	type id_list
+	;*/
+
+id_list:
+	id
+	| id ',' id_list
+//	|begin //удалить?
+	;
+
 type:
 	TYPE
 	| TYPE star
 	;
 id:	
 	TEXT
-	| TEXT id_next
+	| TEXT id_next ' '
+	
 	;
+
 id_next:
 	TEXT
 	| NUM
 	| TEXT id_next
 	| NUM id_next
 	;
-
+	
 star:
 	'*'
 	| '*' star
 	;	
 
+conditional_operator:   //условный оператор
+	IF '(' condition ')' statement_block
+	| IF '(' condition ')' statement_block  ELSE  statement_block
+    | IF '(' condition ')' statement_block mnogoELSE  statement_block
+	;
+
 
 	
+	mnogoELSE:
+	ELIF '(' condition ')' statement_block
+	| mnogoELSE ELIF '(' condition ')' statement_block
+
+
+
+
+statement_block:
+    '{' statement '}'
+    | statement
+	
+	;
+
+statement:
+	begin_next
+	
+	;
+
+condition:
+	initialize 
+	| id '=' id
+	| id '=' NUM
+	| type id '=' id
+	;
+
+
 desc_array:
 	type id square_brackets  {printf("\n");}
 	| type id square_brackets '='  {printf("\n");}
@@ -82,6 +159,7 @@ desc_struct:
 	STRUCT id '{'  '}' ';' 			{printf("\n");}
 	| STRUCT id '{' definition_in_struct '}' ';' 	{printf("\n");}
 	;
+
 definition_in_struct:
 	definition
 	| definition definition_in_struct
@@ -99,7 +177,8 @@ header:
 	
 func:
 	type arg_func_with_staples			
-	| type TEXT arg_func_with_staples		
+	| type TEXT arg_func_with_staples	
+	| 
 	;
 	
 
@@ -119,7 +198,7 @@ variable_func:
 	;
 	
 body_func:
-	TEXT
+	begin_next
 	;
 %%
 
@@ -144,7 +223,13 @@ int main(int argc, char **argv) {
 }
 
 int yyerror(const char *s) {
-    printf("yyerror line: %d \n", line);
+    printf("yyerror %s line: %d \n", s, line);
     exit(0);
 }
 
+/*
+int yyerror(const char *s) {
+    printf("yyerror line: %d \n", line);
+    exit(0);
+}
+*/
