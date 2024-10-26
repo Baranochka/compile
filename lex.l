@@ -11,6 +11,7 @@ extern unsigned int line;
 %%
 [a-zA-Z0-9_-]+\.(h|c) 	{printf("NAME_FILE_HEADER ");return NAME_FILE_HEADER; }
 "\""			{printf("\" ");return '"';}
+"\'"			{printf("\' ");return '\'';}
 "="         		{printf("= ");return '=';}
 "<"         		{printf("< ");return '<';}
 ">"         		{printf("> ");return '>';}
@@ -24,6 +25,10 @@ extern unsigned int line;
 ","         		{printf(", ");return ',';}
 ";"         		{printf("; ");return ';';}
 "#"         		{printf("# ");return '#';}
+<<<<<<< Updated upstream
+=======
+"define"		{printf("define ");return DEFINE;}
+>>>>>>> Stashed changes
 "include"		{printf("include ");return INCLUDE;}   // Токен для директивы #include
 "int"			{printf("int "); return TYPE;}
 "char"			{printf("char ");return TYPE;}

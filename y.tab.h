@@ -60,7 +60,8 @@ extern int yydebug;
     TYPE = 261,                    /* TYPE  */
     TEXT = 262,                    /* TEXT  */
     NUM = 263,                     /* NUM  */
-    STRUCT = 264                   /* STRUCT  */
+    STRUCT = 264,                  /* STRUCT  */
+    DEFINE = 265                   /* DEFINE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
