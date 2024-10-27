@@ -13,12 +13,13 @@ int main() {
 #include <stdio.h>
 #define A 546
 int* in = 3, s;
-unsigned  char Bdsf[2];
+unsigned  char Bdsf[2]=  "SDFDFSD";
 int Bdsf[2] =  {1};
 short    int Bdsf[2] =  {{1},{2}};
-short Bdsf[2] =  {{'b','v','4'}};
 unsigned int Bdsf[2] =  {{1,2,3,4}, {'r','r'}};
-signed     short  int Bdsf[2] =  "sdfdfg";
+short Bdsf[2] =  {{'b','v','4'}};
+
+signed     short  int Bdsf[2] =   {{1},{2}};
 struct dfg ;
 struct dfg {};
 struct dfg {}sdf;
@@ -50,8 +51,39 @@ int i,j,n,e,t,t,sum=0,B[100][100]={0};
         int t = 33, y = 4;
         int c = 45;
         char u = 56;
+        F+=sd;
+        dfs[2][3] += sdf;
     }
     else {
        
     };
+    while(sd){int t = 33, y = 4;}
+    do {int i,j,n,e,t,t,sum=0,B[100][100]={0};}while(1)
+    
+    
+    while (23+!2>=-2&2^6*(2-3)*1||2<=z^3==34!=3) {}
+    for (int i = 1,c = 1 ;i<2;i++){
+    for (int i = 1,c = 1 ;i<2;i++){}
+    }
+    
+    sdfkbjakd(&fdg);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
