@@ -25,18 +25,39 @@ extern unsigned int line;
 ","         		{printf(", ");return ',';}
 ";"         		{printf("; ");return ';';}
 "#"         		{printf("# ");return '#';}
-<<<<<<< Updated upstream
-=======
-"define"		{printf("define ");return DEFINE;}
->>>>>>> Stashed changes
-"include"		{printf("include ");return INCLUDE;}   // Токен для директивы #include
-"int"			{printf("int "); return TYPE;}
-"char"			{printf("char ");return TYPE;}
-"unsigned char" 	{printf("unsigned char ");return TYPE;}
+"if"                                                  	{printf("%s ", yytext); return IF;}
+"else"                                                  {printf("%s ", yytext); return ELSE;}
+"else[ \t\n]+if"                                        {printf("%s ", yytext); return ELIF;}
+"define"						{printf("define ");return DEFINE;}
+"include"						{printf("include ");return INCLUDE;}   
+"return"						{printf("return ");return RETURN;}
+("int"|"char"|"short"|"long"|"float"|"double"|"void")	{printf("%s ",yytext); return TYPE;}
+signed[ \t]+int						{printf("%s ",yytext); return TYPE;}
+"signed"						{printf("%s ",yytext); return TYPE;}
+unsigned[ \t]+int					{printf("%s ",yytext); return TYPE;}
+"unsigned"						{printf("%s ",yytext); return TYPE;}
+signed[ \t]+char					{printf("%s ",yytext); return TYPE;}
+unsigned[ \t]+char					{printf("%s ",yytext); return TYPE;}
+signed[ \t]+short					{printf("%s ",yytext); return TYPE;}
+short[ \t]+int						{printf("%s ",yytext); return TYPE;}
+signed[ \t]+short[ \t]+int				{printf("%s ",yytext); return TYPE;}
+unsigned[ \t]+short					{printf("%s ",yytext); return TYPE;}
+unsigned[ \t]+short[ \t]+int				{printf("%s ",yytext); return TYPE;}
+signed[ \t]+long					{printf("%s ",yytext); return TYPE;}
+signed[ \t]+long[ \t]+int				{printf("%s ",yytext); return TYPE;}
+long[ \t]+int						{printf("%s ",yytext); return TYPE;}
+unsigned[ \t]+long					{printf("%s ",yytext); return TYPE;}
+unsigned[ \t]+long[ \t]+int				{printf("%s ",yytext); return TYPE;}
+long[ \t]+long						{printf("%s ",yytext); return TYPE;}
+long[ \t]+long[ \t]+int					{printf("%s ",yytext); return TYPE;}
+signed[ \t]+long[ \t]+long[ \t]+int			{printf("%s ",yytext); return TYPE;}
+signed[ \t]+long[ \t]+long				{printf("%s ",yytext); return TYPE;}
+unsigned[ \t]+long[ \t]+long				{printf("%s ",yytext); return TYPE;}
+unsigned[ \t]+long[ \t]+long[ \t]+int			{printf("%s ",yytext); return TYPE;}
 "struct"		{printf("struct "); return STRUCT;}
 [a-zA-Z]+		{printf("%s ",yytext); return TEXT;}
 [0-9]+			{printf("%s ",yytext); return NUM;}
-[ \t]*\n    		{printf("probel ");line++;}
+[ \t]*\n    		{printf("\n ");line++;}
 .			{}
 
 %%

@@ -8,11 +8,9 @@ int yyerror(const char *s);
 unsigned int line = 1;
 %}
 
-<<<<<<< Updated upstream
-%token INCLUDE NAME_FILE_HEADER ENDL TYPE TEXT NUM STRUCT  // Объявляем токены, которые будем использовать
-=======
-%token INCLUDE NAME_FILE_HEADER ENDL TYPE TEXT NUM STRUCT DEFINE // Объявляем токены, которые будем использовать
->>>>>>> Stashed changes
+%define parse.error verbose
+%token INCLUDE NAME_FILE_HEADER ENDL TYPE TEXT NUM STRUCT DEFINE RETURN IF ELSE ELIF// Объявляем токены, которые будем использовать
+
 
 %%
 
@@ -22,22 +20,12 @@ Programm:
 	| begin begin_next 			
 	;
 
-<<<<<<< Updated upstream
-begin:
-	include
-	| func ';' 			
-	| func '{''}'';'		
-	| func '{'body_func'}'';' 			
-	| definition
-=======
-begin:				//programm
+
+begin:						//programm
 	include					//complete
 	| define				//complete
-	| TYPE func ';'				//complete	
-	| TYPE func '{''}'';'			//complete	
-	| TYPE func '{'body_func'}'';' 			
+	| TYPE func decl_func  			
 	| definition 
->>>>>>> Stashed changes
 	;
 	
 begin_next: 
@@ -47,18 +35,6 @@ begin_next:
 
 
 definition:
-<<<<<<< Updated upstream
-	variable ';'
-	| desc_array ';'
-	| desc_struct ';'
-	;
-
-variable: 
-	type id 
-	| ',' '*' id 
-	| ',' id
-	;
-=======
 	TYPE definition_var_arr_list ';'
 	| decl_struct 
 	;
@@ -75,7 +51,6 @@ decl_variable:
 	;
 decl_list_var:
       	variable optional_variable
-    	//| decl_list_var ',' variable optional_variable
     	;	
 variable:
       	star variable_id
@@ -93,11 +68,8 @@ variable_id:
 expression:
       NUM
     ;
->>>>>>> Stashed changes
-type:
-	TYPE
-	| TYPE star
-	;
+
+
 id:	
 	TEXT
 	| TEXT id_next
@@ -114,27 +86,18 @@ star:
 	| '*' star
 	;	
 
-<<<<<<< Updated upstream
-
-	
-desc_array:
-	type id square_brackets  {printf("\n");}
-	| type id square_brackets '='  {printf("\n");}
-	;
-=======
 decl_array: 
 	decl_list_array 
 	;
 	
 decl_list_array:
       	array optional_array
-    	//| decl_list_array ',' array optional_array
     	;	
 array:
       	star array_id square_brackets
     	| array_id square_brackets
     	;
->>>>>>> Stashed changes
+
 square_brackets:
 	'[' ']'
 	| '[' ']' square_brackets
@@ -172,15 +135,11 @@ curly_braces_list:
 	'{'var_in_curly_braces'}'
       	| curly_braces_list ',' '{'var_in_curly_braces'}'	
 	;
-<<<<<<< Updated upstream
-definition_in_struct:
-	definition
-	| definition definition_in_struct
-=======
+
 
 decl_struct:
 	STRUCT TEXT definition_struct
->>>>>>> Stashed changes
+
 	;
 	
 definition_struct:
@@ -210,15 +169,18 @@ header:
 	;
 	
 func:
-<<<<<<< Updated upstream
-	type arg_func_with_staples			
-	| type TEXT arg_func_with_staples		
-=======
-	TEXT arg_func_with_staples		
->>>>>>> Stashed changes
+
+	TEXT arg_func_with_staples 		
 	;
 	
-
+decl_func:
+	 ';'
+	| '{''}'			//complete	
+	| '{'body_func_list'}'		//complete	
+	| '{''}'';'			//complete	
+	| '{'body_func_list'}'';'	
+	;
+	
 arg_func_with_staples:
 	'(' arg_func ')' 
 	| '(' ')'					//complete
@@ -234,15 +196,66 @@ variable_func:
 	| TYPE array
 	| STRUCT TEXT TEXT
 	| STRUCT TEXT star TEXT			
+	;	
+
+body_func_list:
+	body_func
+	| body_func body_func_list
+	;
+body_func:
+	definition
+	| IF conditional_operator
+	| return
+	| assigment_operators
+	//| while
+	//| for
+	;
+
+conditional_operator:   //условный оператор
+	| cond_scapes';'
+	| cond_scapes body_if
+	| cond_scapes decl_if';'
+	| cond_scapes decl_if decl_else
+
 	;
 	
-body_func:
-	TEXT
-<<<<<<< Updated upstream
-=======
-	| definition
->>>>>>> Stashed changes
+cond_scapes:
+	'(' condition ')'
+	| NUM
 	;
+decl_else:
+	ELSE decl_if
+	| ELSE decl_if ';'
+	| mnogoELSE 
+	| mnogoELSE ';'
+	;
+
+mnogoELSE:
+	ELSE IF '(' condition ')' decl_if
+	| mnogoELSE ELSE IF '(' condition ')' decl_if
+	| mnogoELSE ELSE decl_if
+	;
+
+
+decl_if:
+	'{'body_func_list'}'
+	|'{''}'
+	;
+
+body_if:
+	definition
+	| IF conditional_operator
+	| return
+	;	
+	
+return:
+	RETURN	NUM ';'
+	;
+condition:
+	TEXT
+	;	
+	
+		
 %%
 
 int main(int argc, char **argv) {
@@ -266,11 +279,9 @@ int main(int argc, char **argv) {
 }
 
 int yyerror(const char *s) {
-<<<<<<< Updated upstream
-    printf("yyerror line: %d \n", line);
-=======
-    printf("\n\nyyerror line: %d\n", line);
->>>>>>> Stashed changes
+
+    printf("yyerror %s line: %d \n", s, line);
+
     exit(0);
 }
 
